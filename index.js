@@ -1,5 +1,7 @@
 const { App, ExpressReceiver, LogLevel } = require('@slack/bolt');
 const config = require('config');
+const path = require('path');
+const express = require('express');
 
 const { MongoClient } = require('mongodb');
 
@@ -103,7 +105,17 @@ const receiver = new ExpressReceiver({
 
 receiver.router.get('/ping', (req, res) => {
   res.status(200).send('pong');
-})
+});
+
+// Serve static files
+receiver.router.use('/assets', express.static(path.join(__dirname, 'assets')));
+receiver.router.use('/privacy', express.static(path.join(__dirname, 'privacy')));
+receiver.router.use('/tos', express.static(path.join(__dirname, 'tos')));
+
+// Serve index.html for root path
+receiver.router.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 const app = new App({
   receiver: receiver,
