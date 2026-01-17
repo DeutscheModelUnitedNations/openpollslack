@@ -65,20 +65,31 @@ const receiver = new ExpressReceiver({
   },
   installationStore: {
     storeInstallation: async (installation) => {
-      const team = await orgCol.findOne({ 'team.id': installation.team.id });
-      if (team) {
-        await orgCol.replaceOne({ 'team.id': installation.team.id }, installation);
-      } else {
-        await orgCol.insertOne(installation);
+      try {
+        console.log('storeInstallation called for team:', installation.team?.id);
+        const team = await orgCol.findOne({ 'team.id': installation.team.id });
+        if (team) {
+          console.log('Updating existing installation for team:', installation.team.id);
+          await orgCol.replaceOne({ 'team.id': installation.team.id }, installation);
+        } else {
+          console.log('Inserting new installation for team:', installation.team.id);
+          await orgCol.insertOne(installation);
+        }
+        console.log('Installation stored successfully for team:', installation.team.id);
+        return installation.team.id;
+      } catch (e) {
+        console.error('Error storing installation:', e);
+        throw e;
       }
-
-      return installation.team.id;
     },
     fetchInstallation: async (InstallQuery) => {
       try {
-        return await orgCol.findOne({ 'team.id': InstallQuery.teamId });
+        console.log('fetchInstallation called for team:', InstallQuery.teamId);
+        const result = await orgCol.findOne({ 'team.id': InstallQuery.teamId });
+        console.log('fetchInstallation result:', result ? 'found' : 'not found');
+        return result;
       } catch (e) {
-        console.error(e)
+        console.error('Error fetching installation:', e);
         throw new Error('No matching authorizations');
       }
     },
