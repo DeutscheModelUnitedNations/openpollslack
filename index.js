@@ -56,9 +56,13 @@ const receiver = new ExpressReceiver({
     redirectUriPath: '/slack/oauth_redirect',
     callbackOptions: {
       success: (installation, installOptions, req, res) => {
+        console.log('OAuth success callback called');
+        console.log('Installation received:', JSON.stringify(installation, null, 2));
         res.redirect(config.get('oauth_success'));
       },
       failure: (error, installOptions , req, res) => {
+        console.log('OAuth failure callback called');
+        console.log('OAuth error:', error);
         res.redirect(config.get('oauth_failure'));
       },
     },
