@@ -105,7 +105,7 @@ app.event('app_home_opened', async ({ event, client, context }) => {
             type: "section",
             text: {
               type: "mrkdwn",
-              text: "Hello, here is how to create a poll with OpenPoll.",
+              text: "Hello, here is how to create a poll with DMUN-Poll.",
             },
           },
           {
@@ -379,7 +379,7 @@ app.command(`/${slackCommand}`, async ({ ack, body, client, command, context, sa
         type: 'section',
         text: {
           type: 'mrkdwn',
-          text: '*Open source poll for slack*',
+          text: '*DMUN-Poll for Slack*',
         },
       },
       {
@@ -1446,9 +1446,9 @@ function createPollView(question, options, isAnonymous, isLimited, limit, isHidd
       options: [{
         text: {
           type: 'plain_text',
-          text: 'Love Open Poll ?',
+          text: 'Love DMUN-Poll ?',
         },
-        value: JSON.stringify({action: 'btn_love_open_poll', user: userId}),
+        value: JSON.stringify({action: 'btn_love_dmun_poll', user: userId}),
       }],
     });
   }
@@ -1588,7 +1588,7 @@ async function btnActions(args) {
     return;
   }
 
-  if ('btn_love_open_poll' === value.action)
+  if ('btn_love_dmun_poll' === value.action)
     supportAction(body, client, context)
   else if ('btn_my_votes' === value.action)
     myVotes(body, client, context);
@@ -1659,7 +1659,7 @@ async function supportAction(body, client, context) {
     channel: body.channel.id,
     user: body.user.id,
     blocks,
-    text: 'Support Open Poll',
+    text: 'Support DMUN-Poll',
   });
 }
 

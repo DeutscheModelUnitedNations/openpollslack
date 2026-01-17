@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dmun-poll
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+      - DMUNPOLL_COMMAND=${DMUNPOLL_COMMAND:-poll}
+      - DMUNPOLL_HELP_LINK=${DMUNPOLL_HELP_LINK:-https://github.com/deutschemodelunitednations/openpollslack}
+      - DMUNPOLL_CLIENT_ID=${DMUNPOLL_CLIENT_ID:-}
+      - DMUNPOLL_CLIENT_SECRET=${DMUNPOLL_CLIENT_SECRET:-}
+      - DMUNPOLL_SIGNING_SECRET=${DMUNPOLL_SIGNING_SECRET:-}
+      - DMUNPOLL_STATE_SECRET=${DMUNPOLL_STATE_SECRET:-change-me-in-production}
+      - DMUNPOLL_OAUTH_SUCCESS=${DMUNPOLL_OAUTH_SUCCESS:-}
+      - DMUNPOLL_OAUTH_FAILURE=${DMUNPOLL_OAUTH_FAILURE:-}
+      - DMUNPOLL_SUPPORT_URL=${DMUNPOLL_SUPPORT_URL:-}
+      - DMUNPOLL_MONGO_URL=mongodb://mongo:27017
+      - DMUNPOLL_MONGO_DB_NAME=${DMUNPOLL_MONGO_DB_NAME:-dmun_poll}
+    depends_on:
+      mongo:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - dmun-poll-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:5000/ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  mongo:
+    image: mongo:6
+    container_name: dmun-poll-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+      - mongo-config:/data/configdb
+    environment:
+      - MONGO_INITDB_DATABASE=dmun_poll
+    restart: unless-stopped
+    networks:
+      - dmun-poll-network
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+volumes:
+  mongo-data:
+    name: dmun-poll-mongo-data
+  mongo-config:
+    name: dmun-poll-mongo-config
+
+networks:
+  dmun-poll-network:
+    name: dmun-poll-network
+    driver: bridge

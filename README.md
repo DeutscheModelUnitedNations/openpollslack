@@ -1,73 +1,117 @@
-# Open source poll for slack
+# DMUN-Poll for Slack
 
-Welcome to the open source poll for slack.  
-This repository is hosted on [GitLab](https://gitlab.com/KazuAlex/openpollslack). [Github repository](https://github.com/KazuAlex/openpollslack) is only a mirror.  
-But feel free to open new issues on both.  
+A polling app for Slack workspaces.
 
-## Important update
+## Docker Usage
 
-If you have an error when submitting poll, please use the "Add to slack" button [on site](https://openpoll.slack.alcor.space/) to re-authorize the bot on your workspace
+### Quick Start with Docker Compose
 
-### Migrate to v3
+1. Copy the example environment file and configure it:
+   ```bash
+   cp .env.example .env
+   # Edit .env with your Slack app credentials
+   ```
 
-To upgrade to v3, you need to have a mongo database.  
-Setup your `config/default.json` with new database url and database name:
-- `mongo_url`: the url to connect to your mongo database
-- `mongo_db_name`: your mongo database name
+2. Start the services:
+   ```bash
+   docker-compose up -d
+   ```
 
-After that, migrate your old database to the mongo with the script:  
-At the root directory, run `./scripts/migrate-v3.sh [MONGO_URL] [MONGO_DB_NAME]`  
-Replace `[MONGO_URL]` by the same `mongo_url` and `[MONGO_DB_NAME]` with the same `mongo_db_name` set in your `config/default.json`.  
-As an example, with the default data from `config/default.json.dist`, the command line to migrate is:
+3. Verify the app is running:
+   ```bash
+   curl http://localhost:5000/ping
+   # Should return: pong
+   ```
+
+### Using the Pre-built Image
+
+Pull from GitHub Container Registry:
+```bash
+docker pull ghcr.io/deutschemodelunitednations/openpollslack:latest
 ```
-./scripts/migrate-v3.sh mongodb://localhost:27017 open_poll
+
+Run with environment variables:
+```bash
+docker run -d \
+  -p 5000:5000 \
+  -e DMUNPOLL_CLIENT_ID=your-client-id \
+  -e DMUNPOLL_CLIENT_SECRET=your-client-secret \
+  -e DMUNPOLL_SIGNING_SECRET=your-signing-secret \
+  -e DMUNPOLL_STATE_SECRET=your-state-secret \
+  -e DMUNPOLL_MONGO_URL=mongodb://your-mongo-host:27017 \
+  -e DMUNPOLL_MONGO_DB_NAME=dmun_poll \
+  ghcr.io/deutschemodelunitednations/openpollslack:latest
 ```
 
-## License
+### Environment Variables
 
-The code is under GNU GPL license. So, you are free to modify the code and redistribute it under same license.  
-  
-Remember the four freedoms of the GPL :  
-> * the freedom to use the software for any purpose,
-> * the freedom to change the software to suit your needs,
-> * the freedom to share the software with your friends and neighbors, and
-> * the freedom to share the changes you make.
+| Variable | Description | Required |
+|----------|-------------|----------|
+| `DMUNPOLL_CLIENT_ID` | Slack OAuth client ID | Yes |
+| `DMUNPOLL_CLIENT_SECRET` | Slack OAuth client secret | Yes |
+| `DMUNPOLL_SIGNING_SECRET` | Slack request signing secret | Yes |
+| `DMUNPOLL_STATE_SECRET` | Secret for OAuth state JWT | Yes |
+| `DMUNPOLL_MONGO_URL` | MongoDB connection string | Yes |
+| `DMUNPOLL_MONGO_DB_NAME` | MongoDB database name | No (default: `dmun_poll`) |
+| `DMUNPOLL_COMMAND` | Slack slash command name | No (default: `poll`) |
+| `DMUNPOLL_OAUTH_SUCCESS` | OAuth success redirect URL | No |
+| `DMUNPOLL_OAUTH_FAILURE` | OAuth failure redirect URL | No |
+| `PORT` | Server port | No (default: `5000`) |
 
-## Command usages
+## Command Usage
 
 ### Simple poll
 ```
 /poll "What's your favourite color ?" "Red" "Green" "Blue" "Yellow"
 ```
+
 ### Anonymous poll
 ```
 /poll anonymous "What's your favourite color ?" "Red" "Green" "Blue" "Yellow"
 ```
+
 ### Limited choice poll
 ```
 /poll limit 2 "What's your favourite color ?" "Red" "Green" "Blue" "Yellow"
 ```
+
 ### Hidden poll votes
 ```
 /poll hidden "What's your favourite color ?" "Red" "Green" "Blue" "Yellow"
 ```
+
 ### Anonymous limited choice poll
 ```
 /poll anonymous limit 2 "What's your favourite color ?" "Red" "Green" "Blue" "Yellow"
 ```
-  
-For both question and choices, feel free to use slack's emoji, `*bold*` `~strike~` `_italics_` and `` `code` ``  
 
-## Self hosted installation
+For both question and choices, feel free to use slack's emoji, `*bold*` `~strike~` `_italics_` and `` `code` ``
 
-Wiki pages are available to help you with the [app configuration](https://gitlab.com/KazuAlex/openpollslack/-/wikis/Self-hosted-installation-(v2)) and the [web page configuration](https://gitlab.com/KazuAlex/openpollslack/-/wikis/Web-page).
+## License
 
-## Known issues
+The code is under GNU GPL license. So, you are free to modify the code and redistribute it under same license.
+
+Remember the four freedoms of the GPL:
+> * the freedom to use the software for any purpose,
+> * the freedom to change the software to suit your needs,
+> * the freedom to share the software with your friends and neighbors, and
+> * the freedom to share the changes you make.
+
+## Migration from v2 to v3
+
+If upgrading from v2, you need to migrate to MongoDB:
+
+1. Setup your `config/default.json` with:
+   - `mongo_url`: MongoDB connection string
+   - `mongo_db_name`: MongoDB database name
+
+2. Run the migration script:
+   ```bash
+   ./scripts/migrate-v3.sh mongodb://localhost:27017 dmun_poll
+   ```
+
+## Known Issues
 
 ### More than 15 options
 
-If you have more than 15 options, you will probably raise an error. It's a slack limitation (see [issue #24](https://gitlab.com/openpollslack/openpollslack/-/issues/24)).
-
-## Support me
-
-To support or thank me, you can contact me. I would be happy to provide you my PayPal address.
+If you have more than 15 options, you may encounter an error due to Slack limitations.

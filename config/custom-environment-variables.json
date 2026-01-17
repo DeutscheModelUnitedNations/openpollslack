@@ -1,0 +1,14 @@
+{
+  "port": "PORT",
+  "command": "DMUNPOLL_COMMAND",
+  "help_link": "DMUNPOLL_HELP_LINK",
+  "client_id": "DMUNPOLL_CLIENT_ID",
+  "client_secret": "DMUNPOLL_CLIENT_SECRET",
+  "signing_secret": "DMUNPOLL_SIGNING_SECRET",
+  "state_secret": "DMUNPOLL_STATE_SECRET",
+  "oauth_success": "DMUNPOLL_OAUTH_SUCCESS",
+  "oauth_failure": "DMUNPOLL_OAUTH_FAILURE",
+  "support_url": "DMUNPOLL_SUPPORT_URL",
+  "mongo_url": "DMUNPOLL_MONGO_URL",
+  "mongo_db_name": "DMUNPOLL_MONGO_DB_NAME"
+}

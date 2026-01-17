@@ -1,14 +1,14 @@
 {
   "port": 5000,
-  "command": "openpoll",
-  "help_link": "https://gitlab.com/kazualex/openpollslack.git",
+  "command": "poll",
+  "help_link": "https://github.com/deutschemodelunitednations/openpollslack",
   "client_id": "",
   "client_secret": "",
   "signing_secret": "",
   "state_secret": "CHANGE ME",
-  "oauth_success": "https://openpoll.slack.alcor.space/?oauth=success",
-  "oauth_failure": "https://openpoll.slack.alcor.space/?oauth=error",
-  "support_url": "https://www.buymeacoffee.com/kazualex",
+  "oauth_success": "",
+  "oauth_failure": "",
+  "support_url": "",
   "mongo_url": "mongodb://localhost:27017",
-  "mongo_db_name": "open_poll"
+  "mongo_db_name": "dmun_poll"
 }

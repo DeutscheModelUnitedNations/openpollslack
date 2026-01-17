@@ -1,0 +1,64 @@
+# Git
+.git
+.gitignore
+
+# Node
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Configuration (should be mounted or provided via env vars)
+config/default.json
+config/open_poll.json
+config/dmun_poll.json
+config/polls.json
+
+# Docker files (not needed in image)
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+# IDE and editor files
+.idea
+.vscode
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Documentation
+README.md
+LICENSE
+*.md
+
+# Test files
+test
+tests
+__tests__
+*.test.js
+*.spec.js
+coverage
+
+# CI/CD
+.github
+.gitlab-ci.yml
+.travis.yml
+
+# Migration reports (generated at runtime)
+*_reports.json
+
+# Environment files
+.env
+.env.*
+*.env
+
+# Logs
+logs
+*.log
+
+# Plan files
+.claude

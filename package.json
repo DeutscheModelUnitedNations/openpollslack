@@ -1,17 +1,17 @@
 {
-  "name": "openpoll",
+  "name": "dmun-poll",
   "version": "3.0.3",
-  "description": "Open source poll slack app",
+  "description": "DMUN-Poll - Polling app for Slack",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/KazuAlex/openpollslack.git"
+    "url": "git+https://github.com/deutschemodelunitednations/openpollslack.git"
   },
   "keywords": [
-    "opensource",
+    "dmun",
     "poll",
     "slack",
     "app"
@@ -19,9 +19,9 @@
   "author": "KazuAlex",
   "license": "GPL-3.0-or-later",
   "bugs": {
-    "url": "https://github.com/KazuAlex/openpollslack/issues"
+    "url": "https://github.com/deutschemodelunitednations/openpollslack/issues"
   },
-  "homepage": "https://github.com/KazuAlex/openpollslack#readme",
+  "homepage": "https://github.com/deutschemodelunitednations/openpollslack#readme",
   "dependencies": {
     "@slack/bolt": "^3.0.0",
     "async-mutex": "^0.3.1",

@@ -1,4 +1,5 @@
 const fs = require('fs');
+// Note: Update this path if your old config file has a different name
 const old = require('../config/open_poll.json');
 const oldPolls = require('../config/polls.json');
 
