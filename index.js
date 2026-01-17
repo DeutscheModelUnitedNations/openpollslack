@@ -1657,29 +1657,33 @@ async function supportAction(body, client, context) {
       type: 'button',
       text: {
         type: 'plain_text',
-        text: 'Open GitLab',
+        text: 'Open GitHub',
       },
       style: 'primary',
-      url: 'https://gitlab.com/KazuAlex/openpollslack',
-      action_id: 'ignore_me',
-    }
-  },
-  {
-    type: 'section',
-    text: {
-      type: 'mrkdwn',
-      text: ':coffee: Buy me a coffee to help me to maintain servers or just thanks me',
-    },
-    accessory: {
-      type: 'button',
-      text: {
-        type: 'plain_text',
-        text: 'Buy a coffee',
-      },
-      url: 'https://www.buymeacoffee.com/kazualex',
+      url: helpLink,
       action_id: 'ignore_me',
     }
   }];
+
+  // Only show support/donate button if supportUrl is configured
+  if (supportUrl) {
+    blocks.push({
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text: ':coffee: Support the project',
+      },
+      accessory: {
+        type: 'button',
+        text: {
+          type: 'plain_text',
+          text: 'Support',
+        },
+        url: supportUrl,
+        action_id: 'ignore_me',
+      }
+    });
+  }
 
   await client.chat.postEphemeral({
     token: context.botToken,
